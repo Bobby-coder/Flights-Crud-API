@@ -1,0 +1,44 @@
+By just mentioning database name in config.json, it will not create a database for us. W have run "sequelize db:create". It create database specified by configuration.
+
+We just have to do is -
+
+sequelize init
+make the configuration changes
+sequelize db:create
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Every Table is considered as a Model. To create a table, we have to create a Model.
+We can create a model by using npx sequelize model:generate. It generates a model and its migration. We can also do model:create.
+We have to use a flag (--name) to name the table or model -> npx sequelize db:generate --name Airplane.
+To give a column name we use (--attributes <name>:<type>,<name2>:<type>) flag -> 
+npx sequelize db:generate --name Airplane --attributes modelNumber:string,capacity:integer
+
+In RDBMS -> attributes are column and tuples are rows.
+
+npx sequelize db:generate --name Airplane --attributes modelNumber:string,capacity:integer
+
+When we run the above command it created two files -> a model file and a migration file.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+In model file, to add some additional constraint we will wrap it inside an object.
+eg - > Airplane.init({
+    modelNumber : {
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    capacity: DataTypes.INTEGER
+})
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+npx sequelize db:generate --name Airplane --attributes modelNumber:string,capacity:integer
+
+After running above command it does not create the table in database, it only creates a model file and a migration file.
+
+Migration files are more or less are like our versions in our table.
+
+Migration files tells us that in the next commit, these are the changes that will actually happen. 
+
+Changes are going to be according to the up function of migration file.
