@@ -42,3 +42,54 @@ Migration files are more or less are like our versions in our table.
 Migration files tells us that in the next commit, these are the changes that will actually happen. 
 
 Changes are going to be according to the up function of migration file.
+
+up function has await queryInterface, queryInterface means if we dont use sequelize or we dont want to use ORM and you want to by default in a raw fashion connect to mysql, then we need to actually setup a queryInterface object that will actually connect to mysql and we'll write raw queries, but because we are using sequelize, it does this query interfacing automatically.
+
+I only added the modelNumber and capacity, but sequelize automatically knows that no matter what you will definately need an id property that will be a primary key that should not be null, it should be autoIncrement true and it should be of type Integer. Therefore sequelize automatically created an id property, createdAt property and updatedAt property automatically inside the migration file.
+
+Sequelize is showing in the next model commit, there will be a table created with all of this properties in migration file.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+We added some constraint in model file, but we should add those constraint in the migration file also because sequelize tells us that there are two level constraint - javascript level and database level. If you will add constraint only in model file than it will be of javascript level only and if you add those constraint in migration file also than those constraint will be of database level i.e, when the table will be created that table will also be having those constraints.
+
+If somebody is inserting some data directly in database then you definitely want database level constraint and if you are sure no one can ever directly enter anything in the database than this javascript level constraint is enough.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+In order to make the commit or make the changes or make the changes do -> npx sequelize db:migrate.
+
+When we do npx sequelize db:migrate, it applies all the pending migrations. Sequelize tracks all the pending migrations using the uniqe migration number that is written in the file name of migration file.
+
+If you want to undo a migration do -> npx sequelize db:migrate:undo. It will revert back everything.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+Table name should be plural and Model name should be singular.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+When we add a migration async up function of migration file applies and when we undo a migration async down function of migration file gets applies.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+async down function says drop the table. In undo migration we lose the data because we are droping the table.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+If you make any changes in model file than changes will be done in javascript level. If you make any changes in migration file than changes will be done in database level.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+Controllers should never directly talk to model, services have business logic they should never talk to modal directly. Repository talk to modal directly. We will make a generic crud in Repository and we will use that crud operations again and again instead of writing crud everytime. This crud Repository help us in avoiding lot of redundant code.
+
+Controllers pass on the call to services, services uses Repositories to interact with the model.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+If we want to insert some data in mysql we do Insert into <TABLE_NAME> <COLUMNS> <VALUES>, if we want to do this in mysql we do -> 
+<MODEL_NAME>.create(data). data will be an object. await Product.create({name:"iPhone"})
+----------------------------------------------------------------------------------------------------------------------------------------------------
+If we want to delete some data we use <MODEL_NAME>.destroy({where:{id:data}}), if we want to use where clause in sequelize we write where clause inside an object. where query always goes inside an object. Then whatever is the condition we put inside an object.
+{where:{id:data}}
+----------------------------------------------------------------------------------------------------------------------------------------------------
+If we want to select all the data on the basis of primary key do -> <MODEL_NAME>.findByPK(data). It returns only an single record.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+If we want to select all the data from the table do -> <MODEL_NAME>.findAll(). We can also write a where clause in findAll({where:{id:data}})
+----------------------------------------------------------------------------------------------------------------------------------------------------
+findByPK() always gives a unique record and findAll gives an array o record.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+findOne() also gives us an single record but based on some other conditions.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+To update, we use <MODEL_NAME>.update(id,{where:{
+    id:id
+}})
