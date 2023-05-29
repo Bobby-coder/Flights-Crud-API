@@ -93,3 +93,24 @@ findOne() also gives us an single record but based on some other conditions.
 To update, we use <MODEL_NAME>.update(id,{where:{
     id:id
 }})
+---------------------------------------------------------------------------------------------------------------------------------------------------
+Creating an airplane is a POST request, data will be in request body.
+POST: /airplane
+req-body: {
+    modelNumber:airbus320,
+    capacity:200
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------
+By default, express does not know how to read request body. 
+To read request body, Whenever there will be a incoming request, we have to mention that, in the incoming request if there is a request body, read it like a json. 
+In earlier version of express, to achieve this, express used to have a inbuilt library.
+Then after some versions of express they extracted out in a separate library named as body-parsor.
+And after some backlash because they sagregate it in a separate library and people wanted it in the same library express, they brought it back inside express. Now you can see body=parsor is separate library also but technically we dont need body-parsor now.
+
+Before you start registring any route, we do app.use(). app.use() is going to register a middleware for all upcoming routes that are mentioned below.
+
+Do app.use(express.json()) and app.use(express.urlencoded({extented:true}))
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
