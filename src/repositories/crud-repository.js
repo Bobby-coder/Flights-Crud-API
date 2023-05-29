@@ -25,6 +25,7 @@ class CrudRepository {
       return response;
     } catch (error) {
       Logger.error("Something went wrong in the Crud Repo : destroy");
+      throw error;
     }
   }
   // get specific data
@@ -34,6 +35,7 @@ class CrudRepository {
       return response;
     } catch (error) {
       Logger.error("Something went wrong in the Crud Repo : get");
+      throw error;
     }
   }
   // get all data
@@ -43,6 +45,7 @@ class CrudRepository {
       return response;
     } catch (error) {
       Logger.error("Something went wrong in the Crud Repo : getAll");
+      throw error;
     }
   }
   // update data
@@ -55,6 +58,7 @@ class CrudRepository {
       });
     } catch (error) {
       Logger.error("Something went wrong in the Crud Repo : update");
+      throw error;
     }
   }
 }
