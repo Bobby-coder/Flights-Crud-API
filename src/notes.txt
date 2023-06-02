@@ -111,6 +111,28 @@ Before you start registring any route, we do app.use(). app.use() is going to re
 
 Do app.use(express.json()) and app.use(express.urlencoded({extented:true}))
 ---------------------------------------------------------------------------------------------------------------------------------------------------
+Suppose we dont send capacity and modelNumber to request body then it will also create a model in this case because in model file both capacity and modelNumber have default value 0 and '' respectively. modelNumber ahould never have default value.
+
+Nowif modelNumber does not have any default value and then you try to create a model then ot will give you the 500 internal server error. Technically the issue is not in our server, user sent the request without the modelNumber. This lies in the category of client error responses and bad request.
+
+So we have to handle this as bad request "400 bad request" not as a "500 internal server error" because fault is not in our server it is on the client side because it is a bad request. User sent a request with invalid or incorrect data.
+---------------------------------------------------------------------------------------------------------------------------------------------------
+In order to handle that we can validate this request inside middleware. middleware has access to the request, response and next(). Inside middleware we will check if modelNumber is not present then we will send the response object with status code of 400 bad request and if modelNumber is present then we will call the next() function it will call the next() middleware. And next middleware will be the airplane controller.
+
+But we not register this order, we will register this order in airplane-routes. In airplane-routes, when we call "/", we directly going to create airplane.
+---------------------------------------------------------------------------------------------------------------------------------------------------
+Instead of handling error everytime, we will create a Error class and whenever we want to throw an error we will create an object from that class.
+---------------------------------------------------------------------------------------------------------------------------------------------------
+Instead of writing error response object and success object again and again, we will define a generic success object and error object and we will use these object wherever we want to write the error object or success response object.
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------
